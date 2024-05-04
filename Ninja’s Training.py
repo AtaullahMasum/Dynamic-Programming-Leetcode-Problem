@@ -67,5 +67,24 @@ def ninjaTraining(n: int, points: List[List[int]]) -> int:
                     point = points[day][task] + dp[day-1][task]
                     dp[day][last] = max(dp[day][last], point)
     return dp[n-1][3]
+# Tabulation to space Optimazation
+# Time Complexity is O(n*4*3)
+# Space Complexity is O(4)+ O(4)
+from typing import *
+def ninjaTraining(n: int, points: List[List[int]]) -> int:
+    dp = [0]*4
+    dp[0] = max(points[0][1], points[0][2])
+    dp[1] = max(points[0][0], points[0][2])
+    dp[2] = max(points[0][0], points[0][1])
+    dp[3] = max(points[0][0], points[0][1], points[0][2])
+    for day in range(1, n):
+        temp = [0]*4
+        for last in range(4):
+            temp[last] = 0
+            for task in range(3):
+                if task != last:
+                    temp[last] = max(temp[last],  points[day][task] + dp[task])
+        dp = temp
+    return dp[3]
     
     
