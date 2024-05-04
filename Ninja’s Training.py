@@ -24,8 +24,8 @@ def ninjaTraining(n: int, points: List[List[int]]) -> int:
 
 
 # Using Memoization
-# Time Complexity is O(n)
-# Space COmplexity is O(n*4)
+# Time Complexity is O(n*4*3)
+# Space COmplexity is O(n*4)+O(n)
 from typing import *
 def helper(day, last, points, dp):
     if day == 0:
@@ -49,4 +49,23 @@ def helper(day, last, points, dp):
 def ninjaTraining(n: int, points: List[List[int]]) -> int:
     dp = [[-1] * 4 for _ in range(n)]  
     return helper(n-1, 3, points, dp)
+# Using Tabulation method
+# Time Complexity is O(n*4*3)
+# Space Complexity is O(n*4)
+from typing import *
+def ninjaTraining(n: int, points: List[List[int]]) -> int:
+    dp = [[-1] * 4 for _ in range(n)]
+    dp[0][0] = max(points[0][1], points[0][2])
+    dp[0][1] = max(points[0][0], points[0][2])
+    dp[0][2] = max(points[0][0], points[0][1])
+    dp[0][3] = max(points[0][0], points[0][1], points[0][2])
+    for day in range(1, n):
+        for last in range(4):
+            dp[day][last] = 0
+            for task in range(3):
+                if task != last:
+                    point = points[day][task] + dp[day-1][task]
+                    dp[day][last] = max(dp[day][last], point)
+    return dp[n-1][3]
+    
     
