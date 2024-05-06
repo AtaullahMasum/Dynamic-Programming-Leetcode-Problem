@@ -55,4 +55,29 @@ class Solution:
                         left += float('inf')
                     dp[i][j] = min(up, left)
         return dp[m-1][n-1]
+# Space Optimization 
+# Time Complexity is O(n*m)
+# Space Complexity is O(n)
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        prev = [0]*n
+        for i in range(m):
+            curr = [0]*n
+            for j in range(n):
+                if i == 0 and j == 0:
+                    curr[j] = grid[i][j]
+                else:
+                    up , left = grid[i][j], grid[i][j]
+                    if i > 0:
+                        up += prev[j]
+                    else:
+                        up += float('inf')
+                    if j > 0:
+                        left += curr[j-1]
+                    else:
+                        left += float('inf')
+                    curr[j] = min(up, left)
+            prev = curr
+        return prev[n-1]
         
