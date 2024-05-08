@@ -89,5 +89,38 @@ class Solution:
                             maxi = max(maxi, value)
                     dp[i][j1][j2] = maxi
         return dp[0][0][m-1]
-        
+# Space Optimization Solution 
+# Time Complexity is O(n*m*m*9)
+# Space Complexity is O(m*m) + O(m*m)
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        n, m = len(grid), len(grid[0])
+        front = [[0]*m for _ in range(m)] 
+        # Base case 
+        for j1 in range(m):
+            for j2 in range(m):
+                if j1 == j2 :
+                    front[j1][j2] = grid[n-1][j1]
+                else:
+                    front[j1][j2] = grid[n-1][j1] + grid[n-1][j2]
+        for i in range(n-2, -1, -1):
+            curr = [[0]*m for _ in range(m)] 
+            for j1 in range(m):
+                for j2 in range(m):
+                    maxi = float('-inf')
+                    for dj1 in (-1, 0, 1):
+                        for dj2 in (-1, 0, 1):
+                            value = 0
+                            if j1 == j2:
+                                value = grid[i][j1]
+                            else:
+                                value = grid[i][j1] + grid[i][j2]
+                            if j1+dj1 < 0 or j1 + dj1 >= m or j2+dj2 < 0 or j2 + dj2 >= m:
+                                value += float('-inf')
+                            else:
+                                value += front[j1+dj1][j2+dj2]
+                            maxi = max(maxi, value)
+                    curr[j1][j2] = maxi
+            front = curr
+        return front[0][m-1]
         
