@@ -75,3 +75,33 @@ def subsetSumToK(n, k, arr):
                 taken = dp[ind-1][target - arr[ind]]
             dp[ind][target] = taken or not_taken
     return dp[n-1][k]
+# Space Optimization 
+# Time Complexity is O(n*target)
+# Space Complexity is O(n) + O(n)
+from os import *
+from sys import *
+from collections import *
+from math import *
+
+def subsetSumToK(n, k, arr):
+
+    # Write your code here
+    # Return a boolean variable 'True' or 'False' denoting the answer
+    prev = [False]*(k+1)
+    
+    prev[0] = True
+    
+    if arr[0] <= k:
+        prev[arr[0]] = True
+    for ind in range(1, n):
+        curr = [False]*(k+1)
+        curr [0] = True
+        for target in range(1, k+1):
+            not_taken = prev[target]
+            taken = False
+            if arr[ind] <= target:
+                taken = prev[target- arr[ind]]
+            curr [target] = not_taken or taken
+        prev = curr
+    return prev[k]
+ 
