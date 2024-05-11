@@ -113,6 +113,57 @@ def findWays(arr: List[int], k: int) -> int:
                 dp[i][target] = (not_taken + taken) % (10**9 + 7)
         
     return dp[n - 1][k]
+# Space Optimization solution added without contain array in zero
+# Time Complexity is O(n*k)
+# Space Complexity is O(k)
+from typing import List
 
+def findWays(arr: List[int], k: int) -> int:
+    n = len(arr)
+    prev =  [0]*(k+1)
+    prev[0] = 1
+    if arr[0] <= k:
+        prev[arr[0]] = 1
+    for i in range(1, n):
+        curr = [0]*(k+1)
+        curr[0] = 1
+        for target in range(1, k+1):
+            not_taken = prev[target]
+            taken = 0
+            if arr[i] <= target:
+                taken = prev[target- arr[i]]
+            curr[target] = not_taken + taken
+        prev = curr
+        
+    return prev[k]
+
+    
+
+# Space Optimization solution added
+# Time Complexity is O(n*k)
+# Space Complexity is O(k)
+from typing import List
+
+def findWays(arr: List[int], k: int) -> int:
+    n = len(arr)
+    prev =  [0]*(k+1)
+    prev[0] = 1
+ 
+    if arr[0] <= k:
+        prev[arr[0]] = 1
+    if arr[0] == 0:
+        prev[0] = 2
+    for i in range(1, n):
+        curr = [0]*(k+1)
+        curr[0] = 1
+        for target in range(k + 1):
+                not_taken = prev[target]
+                taken = 0
+                if arr[i] <= target:
+                    taken = prev[target - arr[i]]
+                curr[target] = (not_taken + taken) % (10**9 + 7)
+        prev = curr
+        
+    return prev[k]
 
     
