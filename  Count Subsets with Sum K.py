@@ -89,6 +89,30 @@ def  findWays(arr, k):
                 taken = dp[i-1][target - arr[i]]
             dp[i][target] = not_taken + taken
     return dp[n-1][k]
+# Using Tabulation method if array contain 0 element
+# Time Complexity is O(n*k)
+# Space Complexity is O(n*k)
+from typing import List
+
+def findWays(arr: List[int], k: int) -> int:
+    n = len(arr)
+    dp = [[0] * (k + 1) for _ in range(n)]
+    for i in range(n):
+        dp[i][0] = 1
+    if arr[0] <= k:
+        dp[0][arr[0]] = 1
+    if arr[0] == 0:
+        dp[0][0] = 2
+      
+    for i in range(1, n):
+        for target in range( k + 1):
+                not_taken = dp[i - 1][target]
+                taken = 0
+                if arr[i] <= target:
+                    taken = dp[i - 1][target - arr[i]]
+                dp[i][target] = (not_taken + taken) % (10**9 + 7)
+        
+    return dp[n - 1][k]
 
 
     
