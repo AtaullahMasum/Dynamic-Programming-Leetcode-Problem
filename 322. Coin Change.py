@@ -73,3 +73,56 @@ class Solution:
             return -1
         else:
             return dp[n-1][amount]
+# Space Optimization
+# Time Complexity is O(n*amount)
+# Space Complexity is O(amount)
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        n = len(coins)
+        if not amount:
+            return 0
+        prev = [0]*(amount+1) 
+        curr = [0]*(amount+1) 
+        for i in range(amount+1):
+            if i% coins[0] == 0:
+                prev[i] = i//coins[0]
+            else:
+                prev[i] = float('inf')
+        for i in range(1, n):
+            for tar in range(amount+1):
+                not_take = prev[tar]
+                take = float('inf')
+                if coins[i] <= tar:
+                    take = 1 + curr[tar- coins[i]]
+                curr[tar] = min(not_take, take)
+            prev = curr
+        if prev[amount] == float('inf'):
+            return -1
+        else:
+            return prev[amount]
+# Space Optimization using Single array
+# Time Complexity is O(n*amount)
+# Space Complexity is O(amount)
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        n = len(coins)
+        if not amount:
+            return 0
+        prev = [0]*(amount+1) 
+        for i in range(amount+1):
+            if i% coins[0] == 0:
+                prev[i] = i//coins[0]
+            else:
+                prev[i] = float('inf')
+        for i in range(1, n):
+            for tar in range(amount+1):
+                not_take = prev[tar]
+                take = float('inf')
+                if coins[i] <= tar:
+                    take = 1 + prev[tar- coins[i]]
+                prev[tar] = min(not_take, take)
+            
+        if prev[amount] == float('inf'):
+            return -1
+        else:
+            return prev[amount]
