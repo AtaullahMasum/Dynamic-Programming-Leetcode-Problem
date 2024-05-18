@@ -37,3 +37,39 @@ class Solution:
         n = len(prices)
         dp = [[-1]*2 for _ in range(n)]
         return self.helper(0, 1, prices,dp)
+# Using Tabulation Method 
+# Time Complexity is O(n*2)
+# Space Complexity is O(n*2)
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        dp = [[0]*2 for _ in range(n+1)]
+        dp[n][0] = dp[n][1] = 0
+        for i in range(n-1, -1, -1):
+            profit = 0
+            for buy in (0, 1):
+                if buy:
+                    profit = max(-prices[i] + dp[i+1][0],0+ dp[i+1][1])
+                else:
+                    profit = max(prices[i] + dp[i+1][1], 0+dp[i+1][0])
+                dp[i][buy] = profit
+        return dp[0][1]
+# Sapce Optimization Method
+# Time Complexity is O(n*2)
+# Space Complexity is O(2)
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        ahead, curr = [0]*2, [0]*2
+        ahead[0] = ahead[1] = 0
+        for i in range(n-1, -1, -1):
+            profit = 0
+            for buy in (0, 1):
+                if buy:
+                    profit = max(-prices[i] + ahead[0],0+ ahead[1])
+                else:
+                    profit = max(prices[i] + ahead[1], 0+ ahead[0])
+                curr[buy] = profit
+            ahead = curr[:]
+        return ahead[1]
+        
