@@ -45,7 +45,7 @@ class Solution:
     def matrixMultiplication(self, N, arr):
         # code here
         dp = [[0]*N for _ in range(N)]   
-        for i in range(N-1, -1, -1):
+        for i in range(N-1, 0, -1):
             for j in range(i+1, N):
                 mini = float('inf')
                 for k in range(i, j):
